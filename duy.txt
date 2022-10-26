@@ -1,0 +1,9 @@
+git add .
+
+git commit -m "note"
+
+git push -u origin main
+
+python manage.py makemigrations
+
+python manage.py migrate  
