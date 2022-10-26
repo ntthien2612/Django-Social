@@ -1,0 +1,28 @@
+//
+#upload file
+
+git add .
+
+git commit -m "first commit"
+
+git push -u origin main
+
+//
+#Pull file tu git ve:
+
+git pull origin
+
+
+python manage.py startapp user
+
+//tai
+pip install mysqlclient
+
+//
+python manage.py migrate
+
+
+//
+
+python manage.py createsuperuser
+
