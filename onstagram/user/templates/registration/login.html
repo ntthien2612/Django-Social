@@ -1,13 +1,27 @@
-{% extends 'base.html' %}
 
-{% block content %}
-<h2>Login</h2>
-
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<link href="https://fonts.googleapis.com/css?family=Indie+Flower|Overpass+Mono" rel="stylesheet">
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Login">
+<div id="wrapper">
+  <div class="main-content">
+    <div class="header">
+        <h1>𝓞𝓷𝓼𝓽𝓪𝓰𝓻𝓪𝓶</h1>
+    </div>
+    <div class="l-part">
+      <input class="input-1"  placeholder="Username" type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" required="" id="id_username">
+      <div class="overlap-text">
+        <input class="input-2"  placeholder="Password" type="password" name="password" autocomplete="current-password" required="" id="id_password">
+       
+      </div>
+      <input type="submit" value="Log in" class="btn" />
+    </div>
+  </div>
+  <div class="sub-content">
+    <div class="s-part">
+      Don't have an account?<a href="{% url 'register' %}">Sign up</a>
+    </div>
+  </div>
+</div>
 </form>
-
-<a href="{% url 'dashboard' %}">Back to dashboard</a>
-{% endblock %}
