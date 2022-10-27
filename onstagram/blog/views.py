@@ -6,10 +6,10 @@ def dashboard(request):
     
     return render(
         request ,
-        "first.html",)
+        "blog/first.html",)
 
 def about(request):
     
     return render(
         request ,
-        "about.html",)
+        "blog/about.html",)
