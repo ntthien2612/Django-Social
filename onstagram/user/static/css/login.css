@@ -9,16 +9,14 @@
   
   #wrapper {
     width: 500px;
-    height: 50%;
     overflow: hidden;
-    border: 0px solid #000;
+    border: 0px ssolid #000;
     margin: 50px auto;
     padding: 10px;
   }
   
   .main-content {
     width: 250px;
-    height: 50%;
     margin: 10px auto;
     background-color: #fff;
     border: 2px solid #e6e6e6;
@@ -70,7 +68,6 @@
   
   .sub-content {
     width: 250px;
-    height: 40%;
     margin: 10px auto;
     border: 1px solid #e6e6e6;
     padding: 20px 50px;
