@@ -1,0 +1,107 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma-rtl.min.css">
+<link rel="stylesheet" href="{% static 'css/profile.css'%}">
+<style>
+    h2{
+        font-weight: bold;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+</style>
+<div class="column">
+
+    <div class="block" style="display: flex;align-items: center;">
+        <img class="rounded-circle account-img" src="/user/media/{{ profile.image }}" alt="" >
+
+        <h1 class="title is-1" style="margin-bottom: 0px;">
+            {{profile}}
+        </h1>
+        <p onclick="edit1()" class="button is-danger is-active"
+            style="margin-left: 30px;text-decoration: none;font-size: 13px; background-color: #FF5858;border-radius: 10px;"><ion-icon name="settings-outline" style="margin-right: 5px;"></ion-icon>Edit profile</p>
+
+    </div>
+    {{ context }}
+    <div class="modal" id="editprofile">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+
+                <p class="modal-card-title"> {{profile}}</p>
+                <button class="delete" aria-label="close" onclick="closemodal()"></button>
+            </header>
+           
+            <form id="editprofileform" action="" method="post" enctype="multipart/form-data" style="overflow-y: scroll;">
+                {% csrf_token %}
+                <section class="modal-card-body">
+                    <h2>First Name</h2>
+                    <input class="input is-primary" type="text" name="first_name" maxlength="150" id="id_first_name"
+                        placeholder="First Name" value="{{ profile.user.first_name }}">
+                    <h2>Last Name</h2>
+                    <input class="input is-link" type="text" name="last_name" maxlength="150" id="id_last_name"
+                        placeholder="Last Name" value="{{ profile.user.last_name }}">
+                    <h2>Email</h2>
+                    <input class="input is-info" type="email" name="email" maxlength="254" id="id_email"
+                        placeholder="Email" value="{{ profile.user.email }}">
+                    <h2>Date Of Birth</h2>
+                    <input class="input is-danger" type="date" name="date_of_birth"
+                        value="{{ profile.date_of_birth }}">
+                    <h2>Avatar</h2>
+                    <img class="rounded-circle account-img" src="/user/media/{{ profile.image }}" alt="" id="preview-img">
+                    <input type="file" name="image" id="file">
+                    <label for="file" class="btn-3">
+                        <span id="upload"><ion-icon name="cloud-upload-outline" style="margin-right: 5px;"></ion-icon> Select picture</span>
+                    </label>
+                </section>
+                <footer class="modal-card-foot">
+                    <button type="button" class="button is-success" onclick="checkform()">Save changes</button>
+                    <button class="button" onclick="closemodal()"> Cancel</button>
+                </footer>
+            </form>
+        </div>
+    </div>
+
+</div>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script>
+    function checkform(){
+        var first_name = document.getElementById("id_first_name").value
+        var last_name = document.getElementById("id_last_name").value
+        var email = document.getElementById("id_email").value
+        
+        if(!first_name || !last_name || !email)
+            alert("First name, last name, email cannot be left blank")
+        else
+            document.getElementById("editprofileform").submit()
+    }
+
+    function edit1() {
+        var editprofile = document.getElementById("editprofile")
+        editprofile.style.display = "flex"
+        editprofile.style.justifyContent = "center"
+        editprofile.style.alignItems = "center"
+
+    }
+
+    function closemodal() {
+        var editprofile = document.getElementById("editprofile")
+        editprofile.style.display = "none"
+    }
+</script>
+<script>
+    const reader = new FileReader();
+    const fileInput = document.getElementById("file");
+    const img = document.getElementById("preview-img");
+    reader.onload = e => {
+        img.src = e.target.result;
+    }
+    fileInput.addEventListener('change', e => {
+        const f = e.target.files[0];
+        reader.readAsDataURL(f);
+    })
+</script>
+
+{% endblock content %}
