@@ -1,5 +1,3 @@
-
-{% load static %}
 {% extends "blog/base.html" %}
 
 {% block title %}Home{% endblock %}
@@ -8,101 +6,21 @@
 
 <div class="col-md-8">
 
-    {% comment %} {% for post in posts %} {% endcomment %}
 
-    <article class="content-section" style="overflow: auto; ">
-      <div class="media">
-          <img class="rounded-circle article-img " src="{% static './undraw_social_interaction_cy9i.png' %}" alt="image">
-          <div class="media-body">
-              <p class="mb-0">
-                <a class="mr-2 h4" href="#">thienne</a>
-              </p>
-              <small class="text-muted">26/12/200</small>
-          </div>
-      </div>
-      <hr>
-      <h3><a class="article-title" href="#">thien rat dep trai</a></h3>
-      <hr>
-      <p class="article-content">{{ post.content|safe|linebreaks|truncatewords_html:"20" }}<a href="#">[Read full post]</a></p>
-    </article>
-
-    {% comment %} {% endfor %} {% endcomment %}
-
-    {% comment %} {% if is_paginated %}
-
-      {% if page_obj.has_previous %}
-        <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
-        <a class="btn btn-outline-info mb-4" href="?page={{page_obj.previous_page_number}}">Previous</a>
-      {% endif %}
-
-      {% for num in page_obj.paginator.page_range %}
-        {% if page_obj.number == num %}
-          <a class="btn btn-info mb-4" href="?page={{num}}">{{num}}</a>
-        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-        <a class="btn btn-outline-info mb-4" href="?page={{num}}">{{num}}</a>
-        {% endif %}
-      {% endfor %}
-
-      {% if page_obj.has_next %}
-        <a class="btn btn-outline-info mb-4" href="?page={{page_obj.next_page_number}}">Next</a>
-        <a class="btn btn-outline-info mb-4" href="?page={{page_obj.paginator.num_pages}}">Last</a>
-      {% endif %}
-
-    {% endif %} {% endcomment %}
+  {% for blog in blogs %}
+    <div class="card">
+      <h2>{{blog.title}}</h2>
+      <h5>{{ blog.date_posted }} </h5>
+      <div class="fakeimg" style="height:200px;"><img class="fakeimg" style="height:200px;" src="/user/media/{{ blog.post_image }}" alt="" ></div>
+      <p>{{ blog.content }}</p>
+    </div>
+  {% endfor %}
 
 </div>
 
 <!-- SIDEBAR -->
 <div class="col-md-4">
-  <div class="content-section" style="border-top: 4px solid red;">
-      <h4>Recent Posts</h4>
-      {% comment %} <br>
-      <!-- <p class="text-muted">You can put any information here you'd like. -->
-          <ul class="list-group">
-              {% if posts.0 %}
-                <a href="{% url 'post-detail' posts.0.pk %}"><li class="list-group-item list-group-item-light">{{ posts.0.title }}</li></a>
-              {% endif %}
-              {% if posts.1 %}
-                <a href="{% url 'post-detail' posts.1.pk %}"><li class="list-group-item list-group-item-light">{{ posts.1.title }}</li></a>
-              {% endif %}
-              {% if posts.2 %}
-                <a href="{% url 'post-detail' posts.2.pk %}"><li class="list-group-item list-group-item-light">{{ posts.2.title }}</li></a>
-              {% endif %}
-              {% if posts.3 %}
-                <a href="{% url 'post-detail' posts.3.pk %}"><li class="list-group-item list-group-item-light">{{ posts.3.title }}</li></a>
-              {% endif %}
-              {% if posts.4 %}
-                <a href="{% url 'post-detail' posts.4.pk %}"><li class="list-group-item list-group-item-light">{{ posts.4.title }}</li></a>
-              {% endif %}
-          </ul>
-          <br> {% endcomment %}
-  </div>
-
-  <!-- PEOPLE YOU CAN FOLLOW -->
-
-  <div class="content-section " style="border-top: 4px solid blue;">
-    <h4>You can follow</h4>
-    <br>
-        <ul class="list-group">
-          {% comment %} {% for user in random_users %}
-            <a href="{% url 'profile-detail-view' user.pk %}"><li class="list-group-item list-group-item-light">{{ user.username }}</li></a>
-          {% endfor %} {% endcomment %}
-          <li>1</li>
-        </ul>
-        <br>
-  </div>
-
-</div>  
-
-{% endblock %}
-{% block script %}
-<script>
-
-  var colors = ['#FB9797', '#FB84BD', '#EA84FB', '#FF6D3F', '#4270E7', 'green', 'blue'];
-    $('.add-border').each(function() {
-        $(this).css('border-top', "3px solid " + colors[Math.floor(Math.random() * colors.length)]);
-    });
-
-</script>
+  
+</div>
 {% endblock %}
 
