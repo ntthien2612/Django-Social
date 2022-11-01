@@ -12,7 +12,7 @@ class Post(models.Model):
     date_updated = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     likes = models.ManyToManyField(User, related_name="blogpost", blank=True)
-    post_image = models.ImageField(upload_to="image",blank=True, null=False)
+    post_image = models.ImageField(default=None,upload_to="image",blank=True, null=False)
 
     def total_likes(self):
         return self.likes.count()
