@@ -5,5 +5,5 @@ urlpatterns = [
     path('indexdashboard/', views.dashboard, name='indexdashboard'),
     path('about/', views.about, name='about'),
     path('home/', views.home, name='home'),
-    path('post/',newpost)
+    path('post/',newpost, name='postnew')
 ]
