@@ -9,3 +9,5 @@ python manage.py makemigrations
 python manage.py migrate  
 
 𝓞𝓷𝓼𝓽𝓪𝓰𝓻𝓪𝓶
+
+git restore .

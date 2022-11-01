@@ -7,3 +7,20 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['body',]
+
+class PostForm(forms.ModelForm):
+    content = forms.CharField(
+        required=True,
+        widget=forms.widgets.Textarea(
+            attrs={
+                "placeholder": "Dweet something...",
+                "class": "textarea is-success is-medium",
+            }
+        ),
+        label="",
+    )
+
+    class Meta:
+        model = Post
+        exclude = ("author",)
+       
