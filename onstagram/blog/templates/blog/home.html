@@ -1,0 +1,26 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<div class="col-md-8">
+
+
+  {% for blog in blogs %}
+    <div class="card">
+      <h2>{{blog.title}}</h2>
+      <h5>{{ blog.date_posted }} </h5>
+      <div class="fakeimg" style="height:200px;"><img class="fakeimg" style="height:200px;" src="/user/media/{{ blog.post_image }}" alt="" ></div>
+      <p>{{ blog.content }}</p>
+    </div>
+  {% endfor %}
+
+</div>
+
+<!-- SIDEBAR -->
+<div class="col-md-4">
+  
+</div>
+{% endblock %}
+
