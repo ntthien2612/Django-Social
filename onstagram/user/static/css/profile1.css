@@ -27,4 +27,13 @@
     justify-content: center;
     align-items: center;
 }
-  
+
+.follow-follower{
+  position: sticky;
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  top: 0;
+}
+
+

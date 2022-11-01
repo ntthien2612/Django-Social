@@ -7,7 +7,7 @@ from django.db.models.signals import post_save
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    following = models.ManyToManyField("self", related_name="following", blank=True)
+    following = models.ManyToManyField("self", related_name="follow_by", symmetrical=False,blank=True)
     date_of_birth = models.CharField(blank=True,max_length=150)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -25,6 +25,6 @@ class Profile(models.Model):
             # user_profile.following.add(instance.profile)
             # user_profile.save()
 
-    def __str__(self):
-        return f'{self.user.username} Profile'
+    # def __str__(self):
+    #     return f'{self.user.username} Profile'
 

@@ -3,12 +3,25 @@
 {% block title %}About{% endblock %}
 
 {% block content %}
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma-rtl.min.css">
 <div class="col-md-8 m-auto">
     <div class="content-section">
-        <h1>About page</h1>
+        <h1 class="subtitle is-2">Suggestion for you</h1>
+        <ul class="menu-list">
+            {% for p in profile %}
+            <a href="/profile/{{p.pk}}" style="color: #524b4b; text-decoration: none;">
+                <li class="box" style="list-style-type: none;">
+                    <img class="rounded-circle account-img" src="/user/media/{{ p.image }}" alt="" id="preview-img">
+                    <span style="    font-size: 25px;font-weight: 600;"> {{p.user.username}}</span>
+                </li>
+            </a>
+            {% endfor %}
+        </ul>
+
+
         <br>
-        <p>Made with &#128150; by Ronik Bhattacharjee &#9996;</p>
+
     </div>
 </div>
 
