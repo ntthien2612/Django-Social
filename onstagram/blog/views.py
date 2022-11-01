@@ -15,3 +15,10 @@ def about(request):
     return render(
         request ,
         "blog/about.html",)
+
+@login_required
+def home(request):
+    
+    return render(
+        request ,
+        "blog/about.html",)
