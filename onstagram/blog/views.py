@@ -7,6 +7,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 from .forms import PostForm
+from django.shortcuts import (get_object_or_404,
+							render,
+							HttpResponseRedirect)
+
 """ Home page with all posts """
 
 @login_required
@@ -41,4 +45,19 @@ def newpost(request):
             dweet = form.save(commit=False)
             dweet.author = request.user
             dweet.save()
+            return redirect("/home")
     return render(request,"blog/newpost.html",{"form": form})
+
+def mypost(request): 
+    post = Post.objects.filter(
+        author=request.user.profile.pk
+    )
+    return render(
+        request,
+        "blog/mypost.html",{"blogs":post})
+
+""" Delete post """
+def delete(request, id):
+    data = get_object_or_404(Post, id=id) 
+    data.delete()
+    return redirect('/mypost')
