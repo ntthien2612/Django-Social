@@ -12,12 +12,10 @@ from .forms import PostForm
 @login_required
 def home(request):
     
-    posts = Post.objects.all()
-    return render(
-        request,
-        "blog/home.html",
-        {"blogs": posts}
-    )
+    followed_posts = Post.objects.filter(
+        author__profile__in=request.user.profile.following.all()
+    ).order_by("-date_posted")
+    return render(request,"blog/home.html",{"blogs": followed_posts})
 
 @login_required
 def dashboard(request):
@@ -36,13 +34,11 @@ def about(request):
         "blog/about.html",{"profile":profiles})
 
 def newpost(request):
+    form = PostForm(request.POST, request.FILES or None)
     if request.method == "POST":
-        form = PostForm(request.POST, request.FILES or None)
         print(request.FILES)
         if form.is_valid():
             dweet = form.save(commit=False)
             dweet.author = request.user
             dweet.save()
-            return redirect("home")
-    form = PostForm()
-    return render(request, "blog/newpost.html", {"form": form})
+    return render(request,"blog/newpost.html",{"form": form})
