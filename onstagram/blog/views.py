@@ -7,9 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 from .forms import PostForm
-from django.shortcuts import (get_object_or_404,
-							render,
-							HttpResponseRedirect)
+from django.shortcuts import (get_object_or_404, HttpResponseRedirect)
 
 """ Home page with all posts """
 
@@ -60,4 +58,13 @@ def mypost(request):
 def delete(request, id):
     data = get_object_or_404(Post, id=id) 
     data.delete()
-    return redirect('/mypost')
+    return redirect(request,'/mypost')
+
+""" Search by post title or username """
+def search(request):
+    if request.method == 'POST':
+        searched = request.POST['searched']
+        posts = Post.objects.filter(title__contains=searched)
+        return render(request, 'blog/search_results.html',{'searched':searched,'posts':posts})
+    else:
+        return render(request, 'blog/search_results.html',{})
