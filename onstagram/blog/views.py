@@ -68,3 +68,6 @@ def search(request):
         return render(request, 'blog/search_results.html',{'searched':searched,'posts':posts})
     else:
         return render(request, 'blog/search_results.html',{})
+
+""" like post """
+
