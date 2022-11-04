@@ -7,17 +7,17 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 from .forms import PostForm
+from django.shortcuts import (get_object_or_404, HttpResponseRedirect)
+
 """ Home page with all posts """
 
 @login_required
 def home(request):
     
-    posts = Post.objects.all()
-    return render(
-        request,
-        "blog/home.html",
-        {"blogs": posts}
-    )
+    followed_posts = Post.objects.filter(
+        author__profile__in=request.user.profile.following.all()
+    ).order_by("-date_posted")
+    return render(request,"blog/home.html",{"blogs": followed_posts})
 
 @login_required
 def dashboard(request):
@@ -36,13 +36,38 @@ def about(request):
         "blog/about.html",{"profile":profiles})
 
 def newpost(request):
+    form = PostForm(request.POST, request.FILES or None)
     if request.method == "POST":
-        form = PostForm(request.POST, request.FILES or None)
         print(request.FILES)
         if form.is_valid():
             dweet = form.save(commit=False)
             dweet.author = request.user
             dweet.save()
-            return redirect("home")
-    form = PostForm()
-    return render(request, "blog/newpost.html", {"form": form})
+            return redirect("/home")
+    return render(request,"blog/newpost.html",{"form": form})
+
+def mypost(request): 
+    post = Post.objects.filter(
+        author=request.user.profile.pk
+    )
+    return render(
+        request,
+        "blog/mypost.html",{"blogs":post})
+
+""" Delete post """
+def delete(request, id):
+    data = get_object_or_404(Post, id=id) 
+    data.delete()
+    return redirect(request,'/mypost')
+
+""" Search by post title or username """
+def search(request):
+    if request.method == 'POST':
+        searched = request.POST['searched']
+        posts = Post.objects.filter(title__contains=searched)
+        return render(request, 'blog/search_results.html',{'searched':searched,'posts':posts})
+    else:
+        return render(request, 'blog/search_results.html',{})
+
+""" like post """
+

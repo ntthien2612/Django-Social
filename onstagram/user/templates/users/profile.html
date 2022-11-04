@@ -20,7 +20,7 @@
             <h1 class="title is-1" style="margin-bottom: 0px;">
                 {{profile.user.username}}
             </h1>
-            <p onclick="edit1()" class="button is-danger is-active"
+            <p onclick="edit1()" id="edit_user" class="button is-danger is-active"
                 style="margin-left: 30px;text-decoration: none;font-size: 13px; background-color: #FF5858;border-radius: 10px;">
                 <ion-icon name="settings-outline" style="margin-right: 5px;"></ion-icon>Edit profile
             </p>
@@ -107,6 +107,9 @@
     var container_btn = document.getElementById("container-btn")
     if (iduser == idlink) {
         container_btn.style.display = "none"
+    }
+    if(iduser != idlink){
+        document.getElementById("edit_user").style.display="none"
     }
 
     function checkform() {
