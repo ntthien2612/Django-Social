@@ -18,6 +18,7 @@
         <h3>{{blog.author.username}}</h3>
       </div>
       <div>
+        <a href="{% url 'editpost' blog.id %}" >Edit</a>
         <a href="{% url 'delete' blog.id %}" Onclick="return ConfirmDelete();" >Delete<i id="delpost" class="fa fa-ellipsis-v dot" aria-hidden="true"></i></a>
       </div>
     </div>

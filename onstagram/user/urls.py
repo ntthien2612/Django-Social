@@ -11,4 +11,5 @@ urlpatterns = [
     path("follows/<int:pk>",follows,name="follows"),
     path("follower/",follower),
     path("follows/",follow)
+    
 ]
