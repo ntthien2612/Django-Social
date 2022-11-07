@@ -38,7 +38,7 @@ def about(request):
     return render(
         request ,
         "blog/about.html",{"profile":profiles})
-
+@login_required
 def newpost(request):
     form = PostForm(request.POST, request.FILES or None)
     if request.method == "POST":
@@ -50,31 +50,33 @@ def newpost(request):
             return redirect("/home")
     return render(request,"blog/newpost.html",{"form": form})
 """  my post """
+@login_required
 def mypost(request): 
     post = Post.objects.filter(
-        author=request.user.profile.pk
+        author=request.user
     )
     return render(
         request,
         "blog/mypost.html",{"blogs":post})
 
 """ Edit my post """
+@login_required
 def editpost(request,id):
         post1 = Post.objects.get(pk=id)
         form = UpdateForm(request.POST or None, request.FILES, instance=post1)
         if form.is_valid():
-            
              form.save()
-            
              return redirect("/mypost")
         return render(request,"blog/editpost.html",{"post1": post1,"form": form})
 """ Delete my post """
+@login_required
 def delete(request, id):
     blog = get_object_or_404(Post, pk=id) 
     blog.delete()
     return redirect('/mypost')
 
 """ Search by post title or username """
+@login_required
 def search(request):
     if request.method == 'POST':
         searched = request.POST['searched']
@@ -84,7 +86,7 @@ def search(request):
         return render(request, 'blog/search_results.html',{})
 
 """ like post """
-
+@login_required
 def likes(request):
     if request.method == "GET":
         post_like = request.GET.get('button_like')
