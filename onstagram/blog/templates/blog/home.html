@@ -29,15 +29,15 @@
     <h5 class="message">{{blog.content}}</h5>
     <div class="actionBtns">
       <div class="left">
-       <div >
+       <div class="favorite">
             <i onclick="like('{{blog.pk}}')" class="bi bi-heart-fill" id="heart_{{blog.pk}}"></i>
        </div>
        <div style=" margin-top: -1.05px;">
         <i class="bi bi-chat-fill chat"></i>
        </div>
 
-       <div><h4 class="likes"><span id="likes_{{blog.pk}}">1200</span>likes</h4></div>
-        
+       <div><h4 class="likes"><span id="likes_{{blog.pk}}"></span> likes</h4></div>
+     
       </div>
     </div>
     
@@ -67,18 +67,38 @@
 </script> -->
 <script>
   function like(id){
+
+  
     const like = document.getElementById("heart_"+id)
     let countlike = document.getElementById("likes_"+id)
     if(!like.style.color){
-      like.style.color="red"   
-      countlike.innerHTML = eval(countlike.innerHTML+'+1')
+      like.style.color="red";
+  
     }
     else {
       like.style.color=""
-      countlike.innerHTML = eval(countlike.innerHTML+'-1')
-      console.log(countlike.innerHTML)
+    
     } 
-  }
+    $.ajax({
+          url:'likes/',
+          type:'get',
+          data: {
+              button_like: id,
+              
+          },
+          success: function(response){
+              console.log(response["valid"])
+              post_like = response["post_like"]
+
+              countlike.innerHTML = post_like
+              
+          }
+        })
+   
+}
+
+
+
 </script>
 
 

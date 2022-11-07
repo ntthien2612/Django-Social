@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from .forms import PostForm, UpdateForm
 from django.shortcuts import (get_object_or_404, HttpResponseRedirect)
 
+from django.http import JsonResponse
 """ Home page with all posts """
 
 @login_required
@@ -18,6 +19,8 @@ def home(request):
     followed_posts = Post.objects.filter(
         author__profile__in=request.user.profile.following.all()
     ).order_by("-date_posted")
+
+
     return render(request,"blog/home.html",{"blogs": followed_posts})
 
 @login_required
@@ -82,3 +85,26 @@ def search(request):
 
 """ like post """
 
+def likes(request):
+    if request.method == "GET":
+        post_like = request.GET.get('button_like')
+        # action_like = request.GET.get('action_like')
+        post = Post.objects.get(pk = post_like)
+        
+
+        try:
+            check_like = post.likes.get( pk=request.user.profile.pk)
+        except:
+            check_like = ''
+
+        if check_like != '' :
+            print("xoa like", check_like)
+            post.likes.remove(request.user)
+        else:
+            print("like")
+            post.likes.add(request.user)
+        
+        count_like = post.likes.count()
+        print(count_like)
+
+    return JsonResponse({"valid":"tao ne", "post_like" : count_like }, status = 200)
