@@ -52,8 +52,10 @@ def newpost(request):
 """  my post """
 def mypost(request): 
     post = Post.objects.filter(
-        author=request.user.profile.pk
+        author=request.user
     )
+    print(post)
+
     return render(
         request,
         "blog/mypost.html",{"blogs":post})
