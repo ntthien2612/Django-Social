@@ -1,6 +1,6 @@
 from pyexpat.errors import messages
 from unittest import result
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 
 from .models import Comment, Post
 from user.models import Profile
@@ -55,6 +55,8 @@ def mypost(request):
     post = Post.objects.filter(
         author=request.user
     )
+    print(post)
+
     return render(
         request,
         "blog/mypost.html",{"blogs":post})
