@@ -27,7 +27,11 @@
     <div class="actionBtns">
       <div class="left">
        <div >
-            <i onclick="like('{{blog.pk}}')" class="bi bi-heart-fill" id="heart_{{blog.pk}}"></i>
+        <form action="{% url 'like_post' blog.pk %}" method="post">
+          {% csrf_token %}
+            <button type="submit", name="post_id", value="{{blog.id}}", class="btn btn-primary">Like</button>
+        </form>
+            <!-- <i onclick="like('{{blog.pk}}')" class="bi bi-heart-fill" id="heart_{{blog.pk}}"></i> -->
        </div>
        <div style=" margin-top: -1.05px;">
         <i class="bi bi-chat-fill chat"></i>
@@ -35,7 +39,7 @@
         
       </div>
     </div>
-    <h4 class="likes"><span id="likes_{{blog.pk}}">1200</span>likes</h4>
+    <h4 class="likes"><span id="likes_{{blog.pk}}">1200 </span> likes</h4>
     <h4 class="title">{{blog.title}}</h4>
     <h5 class="message">{{blog.content}}</h5>
     <h4 class="comment">View all 20 comments</h4>

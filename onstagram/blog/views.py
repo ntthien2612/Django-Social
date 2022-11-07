@@ -1,5 +1,5 @@
 from unittest import result
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 
 from .models import Comment, Post
 from user.models import Profile
@@ -41,4 +41,10 @@ def newpost(request):
             dweet = form.save(commit=False)
             dweet.author = request.user
             dweet.save()
+            return redirect("home")
     return render(request,"blog/newpost.html",{"form": form})
+
+def likeview(request,pk):
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    post.likes.add(request.user)
+    return 
