@@ -7,6 +7,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 from .forms import PostForm
+from django.shortcuts import (get_object_or_404, HttpResponseRedirect)
+
+from django.http import JsonResponse
 """ Home page with all posts """
 
 @login_required
@@ -15,6 +18,8 @@ def home(request):
     followed_posts = Post.objects.filter(
         author__profile__in=request.user.profile.following.all()
     ).order_by("-date_posted")
+
+
     return render(request,"blog/home.html",{"blogs": followed_posts})
 
 @login_required
@@ -41,10 +46,54 @@ def newpost(request):
             dweet = form.save(commit=False)
             dweet.author = request.user
             dweet.save()
-            return redirect("home")
+            return redirect("/home")
     return render(request,"blog/newpost.html",{"form": form})
 
-def likeview(request,pk):
-    post = get_object_or_404(Post, id=request.POST.get('post_id'))
-    post.likes.add(request.user)
-    return 
+def mypost(request): 
+    post = Post.objects.filter(
+        author=request.user.profile.pk
+    )
+    return render(
+        request,
+        "blog/mypost.html",{"blogs":post})
+
+""" Delete my post """
+def delete(request, id):
+    blog = get_object_or_404(Post, id=id) 
+    blog.delete()
+    return redirect('/mypost')
+
+""" Search by post title or username """
+def search(request):
+    if request.method == 'POST':
+        searched = request.POST['searched']
+        posts = Post.objects.filter(title__contains=searched)
+        return render(request, 'blog/search_results.html',{'searched':searched,'posts':posts})
+    else:
+        return render(request, 'blog/search_results.html',{})
+
+""" like post """
+
+def likes(request):
+    if request.method == "GET":
+        post_like = request.GET.get('button_like')
+        # action_like = request.GET.get('action_like')
+        post = Post.objects.get(pk = post_like)
+        
+
+        try:
+            check_like = post.likes.get( pk=request.user.profile.pk)
+        except:
+            check_like = ''
+
+        if check_like != '' :
+            print("xoa like", check_like)
+            post.likes.remove(request.user)
+        else:
+            print("like")
+            post.likes.add(request.user)
+        
+        count_like = post.likes.count()
+        print(count_like)
+
+    return JsonResponse({"valid":"tao ne", "post_like" : count_like }, status = 200)

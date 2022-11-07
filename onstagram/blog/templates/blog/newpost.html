@@ -47,5 +47,17 @@
         reader.readAsDataURL(f);
     })
 </script>
-
+<script>
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    var hours =date.getHours();
+    var miu =date.getMinutes();
+    var secon =date.getSeconds();
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+    var today = year + "-" + month + "-" + day + " " +hours+":"+miu+":"+secon;    
+    document.getElementById("id_date_posted").value = today;
+    </script>
 {% endblock %}
