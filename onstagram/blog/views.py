@@ -15,7 +15,8 @@ from django.http import JsonResponse
 
 @login_required
 def home(request):
-    
+    profile = Profile.objects.get(pk=request.user.profile.pk)
+    profile.following.add(profile)
     followed_posts = Post.objects.filter(
         author__profile__in=request.user.profile.following.all()
     ).order_by("-date_posted")
