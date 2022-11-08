@@ -21,8 +21,13 @@ def home(request):
         author__profile__in=request.user.profile.following.all()
     ).order_by("-date_posted")
 
+    profile = Profile.objects.get(pk=request.user.profile.pk)
 
-    return render(request,"blog/home.html",{"blogs": followed_posts})
+    post1 = Post.objects.filter(likes = request.user)
+    
+
+    
+    return render(request,"blog/home.html",{"blogs": followed_posts,"profile":profile,"post":post1})
 
 @login_required
 def dashboard(request):
@@ -69,7 +74,7 @@ def editpost(request,id):
         form = UpdateForm(request.POST or None, request.FILES, instance=post1)
         if form.is_valid():
              form.save()
-             return redirect("/mypost")
+             return redirect("/home")
         return render(request,"blog/editpost.html",{"post1": post1,"form": form})
 """ Delete my post """
 @login_required
@@ -99,6 +104,7 @@ def likes(request):
 
         try:
             check_like = post.likes.get( pk=request.user.profile.pk)
+            
         except:
             check_like = ''
 
@@ -113,3 +119,4 @@ def likes(request):
         print(count_like)
 
     return JsonResponse({"valid":"tao ne", "post_like" : count_like }, status = 200)
+

@@ -4,6 +4,7 @@ from user.forms import CustomUserCreationForm,UserUpdateForm,ProfileUpdateForm
 from django.contrib.auth import login
 from django.contrib import messages
 from .models import Profile
+from blog.models import Post
 
 def dashboard(request):
     return render(request, "users/dashboard.html")
@@ -33,8 +34,12 @@ def profile(request, pk):
 
         iduser = str(request.user.profile.pk)
         idlink = str(pk)
+
+        post = Post.objects.filter(
+        author=request.user
+        )
        
-        return render(request, "users/profile.html",{"profile": profile,'iduser': iduser,'idlink': idlink})
+        return render(request, "users/profile.html",{"profile": profile,'iduser': iduser,'idlink': idlink,'blogs':post})
 
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)

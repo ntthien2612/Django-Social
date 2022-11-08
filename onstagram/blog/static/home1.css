@@ -1,13 +1,13 @@
 .container .row{
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    justify-content: space-evenly;
+ 
+   
     min-height: 100vh;
 }
 .card{
     position: relative;
-    width: 400px;
+    width: 440px !important;
     min-height: 500px;
     background: #fff;
     box-shadow: 15px 15px 60px rgba(0, 0 , 0, 15);
@@ -129,4 +129,41 @@
     margin-top: 10px;
     font-weight: 500;
     color: #777;
+    font-size: 10px;
+}
+
+.follows-table{
+  position: fixed;
+  top: 95px;
+  background-color: white;
+  padding: 30px 50px 50px 50px;
+  font-size: 20px;
+  border-radius: 0.25rem;
+  box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0 0 1px rgb(10 10 10 / 2%);
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+  width: 302px;
+  border: 1px solid rgba(0,0,0,.125);
+  
+}
+
+.av{
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    border: 2px solid #ebebeb;
+    padding: 0;
+}
+
+.follow-name{
+    font-size: 15px;
+}
+hr{
+    width: 200px;
+    margin: 0.5rem 0 !important;
+}
+
+.profile:hover{
+    background: #f7f7f7;
 }
