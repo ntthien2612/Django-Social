@@ -21,9 +21,8 @@
             <input class="input is-primary" type="text" name="title"  placeholder="Title something..." maxlength="150" required id="id_title" 
             value="{{ post1.title }}"><br>
             <h2> Content: <h2>
-            <input name="content" style="width:5% "; placeholder="Dweet something..."  class="textarea is-link" required id="id_content"
-            value="{{ post1.content }}"></input>
-            
+                <textarea  name="content" cols="30" rows="10" placeholder="Dweet something..."  class="textarea is-link" required id="id_content">{{ post1.content }}</textarea>
+
             <h2>Pictures: </h2>
             <img class="rounded-circle account-img" src="/user/media/{{ post1.post_image }}" id="preview-img">
             <input type="file" name="post_image" accept="image/*" id="id_post_image" >

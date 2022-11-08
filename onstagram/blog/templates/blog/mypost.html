@@ -15,11 +15,16 @@
         <div class="profile_img">
             <img class="cover" src="/user/media/{{blog.author.profile.image}}" alt="">
         </div>
-        <h3>{{blog.author.username}}</h3>
+        <div>
+          <h3>{{blog.author.username}}</h3>
+          <span class="postTime">{{ blog.date_posted }}</span>
+        </div>
       </div>
       <div>
-        <a href="{% url 'editpost' blog.id %}" >Edit</a>
-        <a href="{% url 'delete' blog.id %}" Onclick="return ConfirmDelete();" >Delete<i id="delpost" class="fa fa-ellipsis-v dot" aria-hidden="true"></i></a>
+        <a href="{% url 'editpost' blog.id %}" ><i style="color: black;" class="fa fa-cog" aria-hidden="true"></i></a>
+        <a style="margin-left: 10px;" href="{% url 'delete' blog.id %}" Onclick="return ConfirmDelete();" ><i style="color: black;" class="fa fa-trash" aria-hidden="true"></i>
+
+        </a>
       </div>
     </div>
     <div class="imgBx">
@@ -46,7 +51,7 @@
       </div>
       <input type="text" class="text" placeholder="Add a comment...">
     </div>
-    <h5 class="postTime">1 day ago</h5>
+
   </div>
   {% endfor %}
 
@@ -82,7 +87,8 @@
 <script>
   function ConfirmDelete()
   {
-    var x = confirm("Are you sure you want to delete?");
+    var x = confirm("Are you sure you want to delete ");
+  
     if (x)
         return true;
     else
