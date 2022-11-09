@@ -10,7 +10,7 @@
           <div id="searchbar" >
             <form class="d-flex" method=POST action="{% url 'search' %}">
               {% csrf_token %}
-              <input name="searched" id="search" type="search" placeholder="Search">
+              <input name="searched" id="search" type="search" placeholder="Search...">
               <button class="search-btn" type="submit"><i class="fas fa-search"></i></button>
             </form>
           </div>
