@@ -30,6 +30,8 @@
     <div class="imgBx">
       <img class="cover" src="/user/media/{{blog.post_image}}" alt="">
     </div>
+    <h4 class="title">{{blog.title}}</h4>
+    <h5 class="message">{{blog.content}}</h5>
     <div class="actionBtns">
       <div class="left">
        <div >
@@ -38,12 +40,12 @@
        <div style=" margin-top: -1.05px;">
         <i class="bi bi-chat-fill chat"></i>
        </div>
-        
+       <div><h4 class="likes"><span id="likes_{{blog.pk}}"></span> likes</h4></div>
       </div>
     </div>
-    <h4 class="likes"><span id="likes_{{blog.pk}}">1200</span>likes</h4>
+    {% comment %} <h4 class="likes"><span id="likes_{{blog.pk}}">1200</span>likes</h4>
     <h4 class="title">{{blog.title}}</h4>
-    <h5 class="message">{{blog.content}}</h5>
+    <h5 class="message">{{blog.content}}</h5> {% endcomment %}
     <h4 class="comment">View all 20 comments</h4>
     <div class="addComment">
       <div class="userImg">
@@ -51,7 +53,6 @@
       </div>
       <input type="text" class="text" placeholder="Add a comment...">
     </div>
-
   </div>
   {% endfor %}
 
@@ -67,7 +68,7 @@
     
   }
 </script> -->
-<script>
+{% comment %} <script>
   function like(id){
     const like = document.getElementById("heart_"+id)
     let countlike = document.getElementById("likes_"+id)
@@ -82,7 +83,43 @@
     }
      
       
+  } {% endcomment %}
+  <script>
+    function like(id){
+  
+    
+      const like = document.getElementById("heart_"+id)
+      let countlike = document.getElementById("likes_"+id)
+      if(!like.style.color){
+        like.style.color="red";
+    
+      }
+      else {
+        like.style.color=""
+      
+      } 
+      $.ajax({
+            url:'likes/',
+            type:'get',
+            data: {
+                button_like: id,
+                
+            },
+            success: function(response){
+                console.log(response["valid"])
+                post_like = response["post_like"]
+  
+                countlike.innerHTML = post_like
+                
+            }
+          })
+     
   }
+  
+  
+  
+  </script>
+  
 </script>
 <script>
   function ConfirmDelete()
