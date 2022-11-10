@@ -25,10 +25,14 @@ def home(request):
     profile = Profile.objects.get(pk=request.user.profile.pk)
 
     post1 = Post.objects.filter(likes = request.user)
+
+    mypost = Post.objects.filter(
+        author=request.user
+    )
     
 
     
-    return render(request,"blog/home.html",{"blogs": followed_posts,"profile":profile,"post":post1})
+    return render(request,"blog/home.html",{"blogs": followed_posts,"profile":profile,"post":post1,"mypost":mypost})
 
 @login_required
 def dashboard(request):
@@ -82,7 +86,8 @@ def editpost(request,id):
 def delete(request, id):
     blog = get_object_or_404(Post, pk=id) 
     blog.delete()
-    return redirect('/mypost')
+    user = request.user.profile.pk
+    return redirect('/profile/'+str(user))
 
 """ Search by post title or username """
 @login_required

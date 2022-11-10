@@ -21,7 +21,14 @@
           <span class="postTime">{{ blog.date_posted }}</span>
         </div>
       </div>
-     
+      <div id="action_{{blog.pk}}" style="display: none;">
+        <a href="{% url 'editpost' blog.id %}"><i style="color: black;" class="fa fa-cog"
+                aria-hidden="true"></i></a>
+        <a style="margin-left: 10px;" href="{% url 'delete' blog.id %}" Onclick="return ConfirmDelete();"><i
+                style="color: black;" class="fa fa-trash" aria-hidden="true"></i>
+
+        </a>
+    </div>
     </div>
     <div class="imgBx">
       <img class="cover" src="/user/media/{{blog.post_image}}" alt="">
@@ -79,10 +86,16 @@
 {% for p in post %}
   <p style="display: none;" id="likepost">{{p.pk}}</p>
 {% endfor %}
-<script>
 
+{% for mypost in mypost %}
+  <p style="display: none;" id="mypost">{{mypost.pk}}</p>
+{% endfor %}
+<script>
+  var mypost = document.querySelectorAll("#mypost")
+  for (let i = 0; i < mypost.length; i++) {
+    document.getElementById("action_"+mypost[i].innerHTML).style.display="block"
+  }
   var likepost = document.querySelectorAll("#likepost")
-  
   for (let i = 0; i < likepost.length; i++) {
     document.getElementById("heart_"+likepost[i].innerHTML).style.color="red"
   }
