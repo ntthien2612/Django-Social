@@ -5,10 +5,13 @@ from django.contrib.auth import login
 from django.contrib import messages
 from .models import Profile
 from blog.models import Post
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def dashboard(request):
     return render(request, "users/dashboard.html")
 
+@login_required
 def login1(request):
     response = redirect('accounts/login/')
     return response
@@ -25,8 +28,12 @@ def register(request):
             user = form.save()
             login(request, user)
             return redirect("http://localhost:8000/accounts/login/")
+        else:
+            return render(
+            request, "users/register.html",
+            {"form": CustomUserCreationForm})
 
-
+@login_required
 def profile(request, pk):
     if(request.method == 'GET'):
         profile = Profile.objects.get(pk=pk)
@@ -55,7 +62,7 @@ def profile(request, pk):
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
 
-   
+@login_required  
 def follows (request,pk):
     if not hasattr(request.user, 'profile'):
         missing_profile = Profile(user=request.user)
@@ -72,13 +79,13 @@ def follows (request,pk):
             current_user_profile.following.remove(profile)
         current_user_profile.save()   
     return redirect('/profile/'+str(pk))
-
+@login_required
 def follower(request):
      profile = Profile.objects.get(pk=request.user.profile.pk) 
      return render(
         request ,
         "users/follower.html",{"profile":profile})
-
+@login_required
 def follow(request):
      profile = Profile.objects.get(pk=request.user.profile.pk)
      return render(
