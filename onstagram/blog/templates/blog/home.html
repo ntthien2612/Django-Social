@@ -8,19 +8,27 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma-rtl.min.css">
+<div class="post">
   {% for blog in blogs %}
   <div class="card">
     <div class="top">
       <div class="userDetails">
         <div class="profile_img">
-            <img class="cover" src="/user/media/{{blog.author.profile.image}}" alt="">
+          <img class="cover" src="/user/media/{{blog.author.profile.image}}" alt="">
         </div>
-        <h3>{{blog.author.username}}</h3>
-        
+        <div>
+          <h3>{{blog.author.username}}</h3>
+          <span class="postTime">{{ blog.date_posted }}</span>
+        </div>
       </div>
-      <div>
-        <i class="fa fa-ellipsis-v dot" aria-hidden="true"></i>
-      </div>
+      <div id="action_{{blog.pk}}" style="display: none;">
+        <a href="{% url 'editpost' blog.id %}"><i style="color: black;" class="fa fa-cog"
+                aria-hidden="true"></i></a>
+        <a style="margin-left: 10px;" href="{% url 'delete' blog.id %}" Onclick="return ConfirmDelete();"><i
+                style="color: black;" class="fa fa-trash" aria-hidden="true"></i>
+
+        </a>
+    </div>
     </div>
     <div class="imgBx">
       <img class="cover" src="/user/media/{{blog.post_image}}" alt="">
@@ -29,60 +37,109 @@
     <h5 class="message">{{blog.content}}</h5>
     <div class="actionBtns">
       <div class="left">
-       <div >
-            <i onclick="like('{{blog.pk}}')" class="bi bi-heart-fill" id="heart_{{blog.pk}}"></i>
-       </div>
-       <div style=" margin-top: -1.05px;">
-        <i class="bi bi-chat-fill chat"></i>
-       </div>
+        <div class="favorite">
+          <i onclick="like('{{blog.pk}}')" class="bi bi-heart-fill" id="heart_{{blog.pk}}" ></i>
+          
+        </div>
+        <div style=" margin-top: -1.05px;">
 
-       <div><h4 class="likes"><span id="likes_{{blog.pk}}">1200</span>likes</h4></div>
-        
+          <i class="bi bi-chat-fill chat"></i>
+
+        </div>
+
+        <div>
+          <h4 class="likes"><span id="likes_{{blog.pk}}">{{blog.total_likes}}</span> likes</h4>
+        </div>
+
       </div>
     </div>
-    
     <h4 class="comment">View all 20 comments</h4>
-    
+
     <div class="addComment">
       <div class="userImg">
-        <img class="cover" src="{{user.profile.image.url}}"  alt="">
+        <img class="cover" src="{{user.profile.image.url}}" alt="">
       </div>
       <input type="text" class="text" placeholder="Add a comment...">
     </div>
-    <span class="postTime">{{ blog.date_posted }}</span> 
+   
   </div>
-  {% endfor %}
+
+{% endfor %}
+</div>
+<div class="follows"  >
+  <div class="follows-table" style="overflow-y: hidden; " >
+    <div style="color: black; margin-bottom: 20px;">Follow by you</div>
+    {% for following in profile.following.all %}
+   
+    <hr>
+    <a href="/profile/{{ following.user.profile.pk }}" style="text-decoration: none; color: #524b4b;">
+    <div style="margin-left: 21px;" class="profile">  
+      <img class="rounded-circle account-img av" src="/user/media/{{ following.user.profile.image }}" alt="">
+      <span class="follow-name">{{ following.user.username }}</span> 
+    </div>
+    </a>
+    {% endfor %}
+  </div> 
+</div>
 
 
+{% for p in post %}
+  <p style="display: none;" id="likepost">{{p.pk}}</p>
+{% endfor %}
 
-<!-- SIDEBAR -->
-<!-- <script>
-  function like(){
-    var heart = document.getElementById('heart')
-    var likes = document.getElementById('likes')
-    console.log(heart.style.color)
-    document.getElementById("likes").style.color = "blue";
-    
-  }
-</script> -->
+{% for mypost in mypost %}
+  <p style="display: none;" id="mypost">{{mypost.pk}}</p>
+{% endfor %}
 <script>
-  function like(id){
-    const like = document.getElementById("heart_"+id)
-    let countlike = document.getElementById("likes_"+id)
-    if(!like.style.color){
-      like.style.color="red"   
-      countlike.innerHTML = eval(countlike.innerHTML+'+1')
+  var mypost = document.querySelectorAll("#mypost")
+  for (let i = 0; i < mypost.length; i++) {
+    document.getElementById("action_"+mypost[i].innerHTML).style.display="block"
+  }
+  var likepost = document.querySelectorAll("#likepost")
+  for (let i = 0; i < likepost.length; i++) {
+    document.getElementById("heart_"+likepost[i].innerHTML).style.color="red"
+  }
+
+  function like(id) {
+
+
+    const like = document.getElementById("heart_" + id)
+    let countlike = document.getElementById("likes_" + id)
+
+    if (!like.style.color) {
+      like.style.color = "red";
+
     }
     else {
-      like.style.color=""
-      countlike.innerHTML = eval(countlike.innerHTML+'-1')
-      console.log(countlike.innerHTML)
-    } 
+      like.style.color = ""
+
+    }
+
+    $.ajax({
+      url: 'likes/',
+      type: 'get',
+      data: {
+        button_like: id,
+
+      },
+      success: function (response) {
+        console.log(response["valid"])
+        post_like = response["post_like"]
+        countlike.innerHTML = ""
+        countlike.innerHTML = post_like
+
+      }
+    })
+
   }
+
+
+
 </script>
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
 {% endblock %}

@@ -1,9 +1,9 @@
 {% extends "blog/base.html" %}
 
 {% block title %}Mypost{% endblock %}
-
-{% block content %}
 {% load static %}
+{% block content %}
+
 <link rel="stylesheet" href="{% static 'home1.css' %}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
@@ -15,15 +15,23 @@
         <div class="profile_img">
             <img class="cover" src="/user/media/{{blog.author.profile.image}}" alt="">
         </div>
-        <h3>{{blog.author.username}}</h3>
+        <div>
+          <h3>{{blog.author.username}}</h3>
+          <span class="postTime">{{ blog.date_posted }}</span>
+        </div>
       </div>
       <div>
-        <a href="{% url 'delete' blog.id %}" Onclick="return ConfirmDelete();" >Delete<i id="delpost" class="fa fa-ellipsis-v dot" aria-hidden="true"></i></a>
+        <a href="{% url 'editpost' blog.id %}" ><i style="color: black;" class="fa fa-cog" aria-hidden="true"></i></a>
+        <a style="margin-left: 10px;" href="{% url 'delete' blog.id %}" Onclick="return ConfirmDelete();" ><i style="color: black;" class="fa fa-trash" aria-hidden="true"></i>
+
+        </a>
       </div>
     </div>
     <div class="imgBx">
       <img class="cover" src="/user/media/{{blog.post_image}}" alt="">
     </div>
+    <h4 class="title">{{blog.title}}</h4>
+    <h5 class="message">{{blog.content}}</h5>
     <div class="actionBtns">
       <div class="left">
        <div >
@@ -32,12 +40,12 @@
        <div style=" margin-top: -1.05px;">
         <i class="bi bi-chat-fill chat"></i>
        </div>
-        
+       <div><h4 class="likes"><span id="likes_{{blog.pk}}"></span> likes</h4></div>
       </div>
     </div>
-    <h4 class="likes"><span id="likes_{{blog.pk}}">1200</span>likes</h4>
+    {% comment %} <h4 class="likes"><span id="likes_{{blog.pk}}">1200</span>likes</h4>
     <h4 class="title">{{blog.title}}</h4>
-    <h5 class="message">{{blog.content}}</h5>
+    <h5 class="message">{{blog.content}}</h5> {% endcomment %}
     <h4 class="comment">View all 20 comments</h4>
     <div class="addComment">
       <div class="userImg">
@@ -45,7 +53,6 @@
       </div>
       <input type="text" class="text" placeholder="Add a comment...">
     </div>
-    <h5 class="postTime">1 day ago</h5>
   </div>
   {% endfor %}
 
@@ -61,7 +68,7 @@
     
   }
 </script> -->
-<script>
+{% comment %} <script>
   function like(id){
     const like = document.getElementById("heart_"+id)
     let countlike = document.getElementById("likes_"+id)
@@ -76,12 +83,49 @@
     }
      
       
+  } {% endcomment %}
+  <script>
+    function like(id){
+  
+    
+      const like = document.getElementById("heart_"+id)
+      let countlike = document.getElementById("likes_"+id)
+      if(!like.style.color){
+        like.style.color="red";
+    
+      }
+      else {
+        like.style.color=""
+      
+      } 
+      $.ajax({
+            url:'likes/',
+            type:'get',
+            data: {
+                button_like: id,
+                
+            },
+            success: function(response){
+                console.log(response["valid"])
+                post_like = response["post_like"]
+  
+                countlike.innerHTML = post_like
+                
+            }
+          })
+     
   }
+  
+  
+  
+  </script>
+  
 </script>
 <script>
   function ConfirmDelete()
   {
-    var x = confirm("Are you sure you want to delete?");
+    var x = confirm("Are you sure you want to delete ");
+  
     if (x)
         return true;
     else

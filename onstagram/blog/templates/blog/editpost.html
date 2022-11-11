@@ -1,0 +1,64 @@
+{% extends "blog/base.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma-rtl.min.css">
+<style>
+    label,h1,h2 {
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+</style>
+<div class="col-md-8 m-auto">
+    <div class="content-section">
+        <h1 class="subtitle is-2" style="color: blueviolet;">Edit Post</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h2> Title: <h2>
+            <input class="input is-primary" type="text" name="title"  placeholder="Title something..." maxlength="150" required id="id_title" 
+            value="{{ post1.title }}"><br>
+            <h2> Content: <h2>
+                <textarea  name="content" cols="30" rows="10" placeholder="Dweet something..."  class="textarea is-link" required id="id_content">{{ post1.content }}</textarea>
+
+            <h2>Pictures: </h2>
+            <img class="rounded-circle account-img" src="/user/media/{{ post1.post_image }}" id="preview-img">
+            <input type="file" name="post_image" accept="image/*" id="id_post_image" >
+            <button class="button is-success is-fullwidth is-medium mt-5"
+                    type="submit">Save Post
+            </button> 
+
+        </form>
+        
+        <br>
+
+    </div>
+</div>
+<script>
+    const reader = new FileReader();
+    const fileInput = document.getElementById("id_post_image");
+    const img = document.getElementById("preview-img");
+    reader.onload = e => {
+        img.src = e.target.result;
+    }
+    fileInput.addEventListener('change', e => {
+        const f = e.target.files[0];
+        reader.readAsDataURL(f);
+    })
+</script>
+<script>
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    var hours =date.getHours();
+    var miu =date.getMinutes();
+    var secon =date.getSeconds();
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+    var today = year + "-" + month + "-" + day + " " +hours+":"+miu+":"+secon;    
+    document.getElementById("id_date_posted").value = today;
+    </script>
+{% endblock %}

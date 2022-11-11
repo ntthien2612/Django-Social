@@ -21,7 +21,7 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         exclude = ("author",)
-    class PostForm1(forms.ModelForm):
-        class Meta:
-            model = Post
-            fields = ("title","content","author","date_posted")
+class UpdateForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ("title","content","post_image",)

@@ -1,9 +1,11 @@
 {% extends 'blog/base.html' %}
+{% block title %}Profile{% endblock %}
 {% load static %}
 {% block content %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma-rtl.min.css">
-<link rel="stylesheet" href="{% static 'css/profile1.css'%}">
+<link rel="stylesheet" href="{% static 'css/profile.css'%}">
+
 <style>
     h2 {
         font-weight: bold;
@@ -49,7 +51,7 @@
             <div class="modal-card">
                 <header class="modal-card-head">
 
-                    <p class="modal-card-title"> {{profile}}</p>
+                    <p class="modal-card-title" style=""> {{profile.user.username}}</p>
                     <button class="delete" aria-label="close" onclick="closemodal()"></button>
                 </header>
 
@@ -82,21 +84,66 @@
                     </section>
                     <footer class="modal-card-foot">
                         <button type="button" class="button is-success" onclick="checkform()">Save changes</button>
-                        <button class="button" onclick="closemodal()"> Cancel</button>
+                        <span class="button" onclick="closemodal()"> Cancel</span>
                     </footer>
                 </form>
             </div>
         </div>
         <div class="container" style="display: flex;">
             <div style="flex: 2;">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="post" id="post">
+    {% for blog in blogs %}
+    <div class="card">
+        <div class="top">
+            <div class="userDetails">
+                <div class="profile_img">
+                    <img class="cover" src="/user/media/{{blog.author.profile.image}}" alt="">
+                </div>
+                <div>
+                    <h3>{{blog.author.username}}</h3>
+                    <span class="postTime">{{ blog.date_posted }}</span>
+                </div>
+            </div>
+            <div>
+                <a href="{% url 'editpost' blog.id %}"><i style="color: black;" class="fa fa-cog"
+                        aria-hidden="true"></i></a>
+                <a style="margin-left: 10px;" href="{% url 'delete' blog.id %}" Onclick="return ConfirmDelete();"><i
+                        style="color: black;" class="fa fa-trash" aria-hidden="true"></i>
+
+                </a>
+            </div>
+        </div>
+        <div class="imgBx">
+            <img class="cover" src="/user/media/{{blog.post_image}}" alt="">
+        </div>
+        <div class="actionBtns">
+            <div class="left">
+                <div>
+                    <i onclick="like('{{blog.pk}}')" class="bi bi-heart-fill" id="heart_{{blog.pk}}"></i>
+                </div>
+                <div style=" margin-top: -1.05px;">
+                    <i class="bi bi-chat-fill chat"></i>
+                </div>
 
             </div>
-
-
+        </div>
+        <h4 class="likes"><span id="likes_{{blog.pk}}">{{blog.total_likes}}</span> likes</h4>
+        <h4 class="title">{{blog.title}}</h4>
+        <h5 class="message">{{blog.content}}</h5>
+        <h4 class="comment">View all 20 comments</h4>
+        <div class="addComment">
+            <div class="userImg">
+                <img class="cover" src="/user/media/{{blog.post_image}}" alt="">
+            </div>
+            <input type="text" class="text" placeholder="Add a comment...">
         </div>
 
     </div>
-    
+    {% endfor %}
 </div>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
@@ -108,8 +155,9 @@
     if (iduser == idlink) {
         container_btn.style.display = "none"
     }
-    if(iduser != idlink){
-        document.getElementById("edit_user").style.display="none"
+    if (iduser != idlink) {
+        document.getElementById("edit_user").style.display = "none"
+        document.getElementById("post").style.display = "none"
     }
 
     function checkform() {
