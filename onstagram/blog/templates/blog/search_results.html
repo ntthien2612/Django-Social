@@ -9,8 +9,17 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma-rtl.min.css">
-
+<style>
+  h1 {
+      font-weight: bold;
+      margin-bottom: 10px;
+      margin-top: 10px;
+  }
+</style>
       {% if searched %}
+        <h1>You Search For 
+          "{{searched}}" . . .</h1>
+        <br/>
           {% for post in posts %}
           <div class="card">
             <div class="top">
@@ -53,5 +62,7 @@
           {% endfor %}
       {% else %}
         <h1>Hey! You  Forgot To Search For A Post. . . </h1>
+      
       {% endif %}
+      
 {% endblock %}

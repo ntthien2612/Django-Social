@@ -54,17 +54,21 @@ def mypost(request):
         request,
         "blog/mypost.html",{"blogs":post})
 
-""" Delete post """
+""" Delete my post """
 def delete(request, id):
-    data = get_object_or_404(Post, id=id) 
-    data.delete()
-    return redirect(request,'/mypost')
+    blog = get_object_or_404(Post, id=id) 
+    blog.delete()
+    return redirect('/mypost')
 
 """ Search by post title or username """
 def search(request):
     if request.method == 'POST':
         searched = request.POST['searched']
+       
         posts = Post.objects.filter(title__contains=searched)
         return render(request, 'blog/search_results.html',{'searched':searched,'posts':posts})
     else:
         return render(request, 'blog/search_results.html',{})
+
+""" like post """
+
