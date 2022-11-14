@@ -59,11 +59,37 @@
   <script>
     $(document).on('submit', '.commentForm', function (event) {
       event.preventDefault();
-      var form = new FormData(this);
-      console.log(form.get('comment'));
-      console.log($(this).attr('id'));
-
       
+
+      var form = new FormData(this);
+      var comment_body = form.get('comment');
+      var post_id = form.get('id_post');
+      
+      $('#comment_body_'+post_id).val("")
+      $.ajax({
+
+        url: 'comment/',
+        type: 'get',
+        data: {
+          comment_body: comment_body,
+          post_id: post_id 
+
+       },
+        success: function (response) {
+          $('#comment_'+post_id).prepend(' <div> <img src="{{user.profile.image.url}}" '+ 
+                                          'style="height: 30px; width:30px" class="border border-success rounded-circle"/>'+ 
+                                          ' <span class="tag is-light is-medium">'
+                                          +response["comment_post"]+ '</span>'+
+                                          
+                                          '<span class="is-small has-text-grey-light">'+
+                                          ' ( '+response["comment_time"]+' by '+response["comment_user"]+') </span> '+
+                                        
+                                        
+                                          '</div>  </br>');
+          console.log(response["comment_post"]);
+          
+        }
+      })
       
       
     });

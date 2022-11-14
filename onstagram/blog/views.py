@@ -28,10 +28,13 @@ def home(request):
     mypost = Post.objects.filter(
         author=request.user
     )
+
+    comment_post = Comment.objects.all().order_by("date_added")
     
 
+
     
-    return render(request,"blog/home.html",{"blogs": followed_posts,"profile":profile,"post":post1,"mypost":mypost})
+    return render(request,"blog/home.html",{"blogs": followed_posts,"profile":profile,"post":post1,"mypost":mypost, "comment_post" : comment_post})
 
 @login_required
 def dashboard(request):
@@ -126,3 +129,19 @@ def likes(request):
 
     return JsonResponse({"valid":"tao ne", "post_like" : count_like }, status = 200)
 
+@login_required
+def comment(request):
+    if request.method == "GET":
+        comment_body = request.GET.get('comment_body')
+        post_id = request.GET.get('post_id')
+        post = Post.objects.get(pk = post_id)
+        print(post_id)
+        print(comment_body)
+
+        cmt = Comment.objects.create(post = post, name = request.user, body = comment_body )
+
+        comment_post = Comment.objects.get(pk = cmt.pk)
+        comment_time = comment_post.date_added
+        comment_user = comment_post.name.username
+        # user_image = cmt.name.profile.image
+    return JsonResponse({ "comment_post": comment_post.body , "comment_time": comment_time, "comment_user": comment_user  }, status = 200)

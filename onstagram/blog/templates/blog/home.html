@@ -53,25 +53,41 @@
       </div>
     </div>
 
-    <form class="commentForm" id="commentform_{{blog.pk}}" method="post">
+    <form class="commentForm" id="commentform_{{blog.pk}}" method="get">
+      <input hidden type="text" name="id_post" value = "{{blog.pk}}"  >
       <div class="addComment">
         <div class="userImg">
           <img class="cover" src="{{user.profile.image.url}}" alt="">
         </div>
-        <input type="text" class="text" placeholder="Add a comment..." required="" name="comment" >
-        <button type="submit" style="border: none; margin-right: 20px;"><i class="bi bi-send"></i></button>
+        <input type="text" class="text" id = "comment_body_{{blog.pk}}" placeholder="Add a comment..." required="" name="comment" >
+        <button style="border: none; margin-right: 20px;"><i class="bi bi-send"></i></button>
       </div>
 
     </form>
 
 
-    <h4 class="comment">View all 20 comments</h4>
+    <h4 class="comment">View all {{ comment_post.count }} comments</h4>
 
-    <div class="comment" id="comment_{{blog.pk}}" style="display: none; margin-top: 15px;">
-      <ul>
-        <li>thien tot</li>
-        <li> thien dep</li>
-      </ul>
+    <div class="comment"  id="comment_{{blog.pk}}" style="display: none; margin-top: 15px;">
+      {%for cmt in comment_post.all.reverse%}
+                
+      {%if cmt.post == blog%}
+        <div>
+            <img src="/user/media/{{cmt.name.profile.image}}" 
+                        style="height: 30px; width:30px"
+                        class="border border-success rounded-circle" />
+         
+          <span class="tag is-light is-medium">
+              {{cmt.body}}
+          </span>
+
+          <span class="is-small has-text-grey-light">
+            ({{ cmt.date_added }} by {{ cmt.name.username }})
+        </span>
+        </div>  
+        </br>
+      {%endif%}
+      {%endfor%}
     </div>
   </div>
 
