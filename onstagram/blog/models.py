@@ -1,8 +1,10 @@
+import datetime
 from distutils.command.upload import upload
-from django.db import models
-from django.utils import timezone
+
 from django.contrib.auth.models import User
+from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 
 """ Post model """
 class Post(models.Model):
@@ -29,7 +31,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, related_name="comments" , on_delete=models.CASCADE)
     name = models.ForeignKey(User, on_delete=models.CASCADE)
     body = models.TextField(max_length=200)
-    date_added = models.DateTimeField(auto_now_add=True)
+    date_added = models.DateTimeField(default=datetime.datetime.now)
 
     def __str__(self):
         return '%s - %s - %s' %(self.post.title, self.name, self.id)

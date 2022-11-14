@@ -42,16 +42,37 @@
        </div>
        <div><h4 class="likes"><span id="likes_{{blog.pk}}"></span> likes</h4></div>
       </div>
+      <div style=" margin-top: -1.05px;">
+
+        <i onclick="comment('{{blog.pk}}')" class="bi bi-chat-fill chat"></i>
+
+      </div>
     </div>
     {% comment %} <h4 class="likes"><span id="likes_{{blog.pk}}">1200</span>likes</h4>
     <h4 class="title">{{blog.title}}</h4>
     <h5 class="message">{{blog.content}}</h5> {% endcomment %}
-    <h4 class="comment">View all 20 comments</h4>
-    <div class="addComment">
-      <div class="userImg">
-        <img class="cover" src="/user/media/{{blog.post_image}}" alt="">
-      </div>
-      <input type="text" class="text" placeholder="Add a comment...">
+    <h4 class="comment">View all comments</h4>
+
+    <div class="comment"  id="comment_{{blog.pk}}" style="display: none; margin-top: 15px;">
+      {%for cmt in comment_post.all.reverse%}
+                
+      {%if cmt.post == blog%}
+        <div>
+            <img src="/user/media/{{cmt.name.profile.image}}" 
+                        style="height: 30px; width:30px"
+                        class="border border-success rounded-circle" />
+         
+          <span class="tag is-light is-medium">
+              {{cmt.body}}
+          </span>
+
+          <span class="is-small has-text-grey-light">
+            ({{ cmt.date_added }} by {{ cmt.name.username }})
+        </span>
+        </div>  
+        </br>
+      {%endif%}
+      {%endfor%}
     </div>
   </div>
   {% endfor %}
