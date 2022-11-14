@@ -22,13 +22,12 @@
         </div>
       </div>
       <div id="action_{{blog.pk}}" style="display: none;">
-        <a href="{% url 'editpost' blog.id %}"><i style="color: black;" class="fa fa-cog"
-                aria-hidden="true"></i></a>
+        <a href="{% url 'editpost' blog.id %}"><i style="color: black;" class="fa fa-cog" aria-hidden="true"></i></a>
         <a style="margin-left: 10px;" href="{% url 'delete' blog.id %}" Onclick="return ConfirmDelete();"><i
-                style="color: black;" class="fa fa-trash" aria-hidden="true"></i>
+            style="color: black;" class="fa fa-trash" aria-hidden="true"></i>
 
         </a>
-    </div>
+      </div>
     </div>
     <div class="imgBx">
       <img class="cover" src="/user/media/{{blog.post_image}}" alt="">
@@ -38,12 +37,12 @@
     <div class="actionBtns">
       <div class="left">
         <div class="favorite">
-          <i onclick="like('{{blog.pk}}')" class="bi bi-heart-fill" id="heart_{{blog.pk}}" ></i>
-          
+          <i onclick="like('{{blog.pk}}')" class="bi bi-heart-fill" id="heart_{{blog.pk}}"></i>
+
         </div>
         <div style=" margin-top: -1.05px;">
 
-          <i class="bi bi-chat-fill chat"></i>
+          <i onclick="comment('{{blog.pk}}')" class="bi bi-chat-fill chat"></i>
 
         </div>
 
@@ -53,52 +52,89 @@
 
       </div>
     </div>
+
+    <form class="commentForm" id="commentform_{{blog.pk}}" method="post">
+      <div class="addComment">
+        <div class="userImg">
+          <img class="cover" src="{{user.profile.image.url}}" alt="">
+        </div>
+        <input type="text" class="text" placeholder="Add a comment..." required="" name="comment" >
+        <button type="submit" style="border: none; margin-right: 20px;"><i class="bi bi-send"></i></button>
+      </div>
+
+    </form>
+
+
     <h4 class="comment">View all 20 comments</h4>
 
-    <div class="addComment">
-      <div class="userImg">
-        <img class="cover" src="{{user.profile.image.url}}" alt="">
-      </div>
-      <input type="text" class="text" placeholder="Add a comment...">
+    <div class="comment" id="comment_{{blog.pk}}" style="display: none; margin-top: 15px;">
+      <ul>
+        <li>thien tot</li>
+        <li> thien dep</li>
+      </ul>
     </div>
-   
   </div>
 
-{% endfor %}
+
+  {% endfor %}
 </div>
-<div class="follows"  >
-  <div class="follows-table" style="overflow-y: hidden; " >
+<div class="follows">
+  <div class="follows-table" style="overflow-y: hidden; ">
     <div style="color: black; margin-bottom: 20px;">Follow by you</div>
     {% for following in profile.following.all %}
-   
+
     <hr>
     <a href="/profile/{{ following.user.profile.pk }}" style="text-decoration: none; color: #524b4b;">
-    <div style="margin-left: 21px;" class="profile">  
-      <img class="rounded-circle account-img av" src="/user/media/{{ following.user.profile.image }}" alt="">
-      <span class="follow-name">{{ following.user.username }}</span> 
-    </div>
+      <div style="margin-left: 21px;" class="profile">
+        <img class="rounded-circle account-img av" src="/user/media/{{ following.user.profile.image }}" alt="">
+        <span class="follow-name">{{ following.user.username }}</span>
+      </div>
     </a>
     {% endfor %}
-  </div> 
+  </div>
 </div>
 
 
 {% for p in post %}
-  <p style="display: none;" id="likepost">{{p.pk}}</p>
+<p style="display: none;" id="likepost">{{p.pk}}</p>
 {% endfor %}
 
 {% for mypost in mypost %}
-  <p style="display: none;" id="mypost">{{mypost.pk}}</p>
+<p style="display: none;" id="mypost">{{mypost.pk}}</p>
 {% endfor %}
 <script>
   var mypost = document.querySelectorAll("#mypost")
   for (let i = 0; i < mypost.length; i++) {
-    document.getElementById("action_"+mypost[i].innerHTML).style.display="block"
+    document.getElementById("action_" + mypost[i].innerHTML).style.display = "block"
   }
   var likepost = document.querySelectorAll("#likepost")
   for (let i = 0; i < likepost.length; i++) {
-    document.getElementById("heart_"+likepost[i].innerHTML).style.color="red"
+    document.getElementById("heart_" + likepost[i].innerHTML).style.color = "red"
   }
+
+  function comment(id) {
+    const cmt = document.getElementById("comment_" + id)
+
+    if (cmt.style.display == "none") {
+      cmt.style.display = "block";
+
+    }
+    else {
+      cmt.style.display = "none";
+
+    }
+
+  }
+
+
+
+
+ 
+
+
+
+
+
 
   function like(id) {
 

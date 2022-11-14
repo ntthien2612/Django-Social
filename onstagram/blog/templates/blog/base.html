@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,25 +14,20 @@
     <title>{% block title %}{% endblock %}</title>
 
 </head>
+
 <body>
     <header class="site-header" id="header">
 
-        <!-- NAVBAR -->
-        {% include 'blog/navbar.html' %}
-    </header>
+    <!-- NAVBAR -->
+    {% include 'blog/navbar.html' %}
+  </header>
 
-    <!-- MAIN SECTION -->
-    <main role="main" class="container">
-      <div class="row">
+  <!-- MAIN SECTION -->
+  <main role="main" class="container">
+    <div class="row">
 
-          
 
-          
-          {% block content %}{% endblock %}
-          
 
-      </div>
-    </main>
 
       {% block script %}{% endblock %}
     <!-- SCRIPTS -->
@@ -45,4 +41,5 @@
     <!-- ajax -->
     
 </body>
+
 </html>
