@@ -106,7 +106,7 @@ def likes(request):
         post_like = request.GET.get('button_like')
         # action_like = request.GET.get('action_like')
         post = Post.objects.get(pk = post_like)
-        
+        check_like = ''
 
         try:
             check_like = post.likes.get( pk=request.user.profile.pk)
